@@ -1,0 +1,35 @@
+name: extraction
+description: >
+  Extract structured fields from free-text job ads into JSON.
+  Ties into the JobScout use case: turning messy postings into clean records.
+grader: json_fields
+system: >
+  You extract structured data from job ads. Respond with ONLY a JSON object,
+  no prose, no markdown fences. Keys: title (string), seniority (one of:
+  junior, mid, senior), remote (boolean).
+
+cases:
+  - id: senior-remote
+    prompt: >
+      Ad: "We're hiring a Senior Backend Engineer (Python). Fully remote,
+      work from anywhere in Europe."
+    expected:
+      title: Senior Backend Engineer
+      seniority: senior
+      remote: true
+
+  - id: junior-onsite
+    prompt: >
+      Ad: "Junior Data Analyst wanted for our Belgrade office. On-site,
+      Mon-Fri."
+    expected:
+      seniority: junior
+      remote: false
+
+  - id: mid-hybrid
+    prompt: >
+      Ad: "Looking for a mid-level Frontend Developer. Hybrid: 2 days in
+      office, 3 remote."
+    expected:
+      seniority: mid
+      remote: false

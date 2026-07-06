@@ -1,0 +1,22 @@
+name: judge_demo
+description: >
+  Open-ended answers graded by an LLM judge against a rubric — the case where
+  exact_match can't work. `expected` here is the rubric, not a literal answer.
+grader: llm_judge
+judge: claude:claude-opus-4-8   # any provider works: claude:*, ollama:*
+system: >
+  Answer the question concisely in 1-3 sentences.
+
+cases:
+  - id: explain-rag
+    prompt: "In one or two sentences, what problem does retrieval-augmented generation solve?"
+    expected: >
+      Must convey that RAG grounds the model in external/up-to-date documents it
+      retrieves at query time, reducing hallucination and letting it answer about
+      data outside its training set.
+
+  - id: capital
+    prompt: "What is the capital of Serbia, and roughly how many people live there?"
+    expected: >
+      Must state that the capital is Belgrade and give a population figure in the
+      right ballpark (roughly 1.2-1.7 million).

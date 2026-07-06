@@ -1,0 +1,17 @@
+name: smoke
+description: >
+  Self-contained sanity check for the framework itself, using the mock
+  provider's MOCK_ANSWER hook. Should be all-green regardless of any model.
+grader: exact_match
+
+cases:
+  - id: pass-a
+    prompt: |
+      Reply with the answer below.
+      MOCK_ANSWER: hello
+    expected: hello
+  - id: pass-b
+    prompt: |
+      Reply with the answer below.
+      MOCK_ANSWER: 42
+    expected: 42

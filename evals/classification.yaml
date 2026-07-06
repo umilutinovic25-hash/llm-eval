@@ -1,0 +1,17 @@
+name: classification
+description: Sentiment classification — a cheap exact-match eval to smoke-test any provider.
+grader: exact_match
+system: >
+  Classify the sentiment of the text as exactly one word: positive, negative,
+  or neutral. Respond with only that word, lowercase, nothing else.
+
+cases:
+  - id: clearly-positive
+    prompt: "The product quality is excellent and shipping was fast!"
+    expected: positive
+  - id: clearly-negative
+    prompt: "Terrible customer service, I will never order again."
+    expected: negative
+  - id: neutral
+    prompt: "The package arrived on Tuesday."
+    expected: neutral
