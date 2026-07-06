@@ -97,6 +97,12 @@ leniency bias versus a bare yes/no). Judge tokens cost money but are
 deliberately kept out of the model-under-test's cost column so the comparison
 stays honest. See `src/llm_eval/graders/judge.py`.
 
+Override the judge from the CLI (handy for judging offline with a local model):
+
+```bash
+llm-eval evals/judge_demo.yaml -p ollama:llama3.2 --judge ollama:llama3.2
+```
+
 ## Cost tracking
 
 Cost is computed from each response's token usage against the published

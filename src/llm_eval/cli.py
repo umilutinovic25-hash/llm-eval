@@ -5,6 +5,7 @@ import asyncio
 import sys
 from pathlib import Path
 
+from llm_eval.providers import create_provider
 from llm_eval.report import print_report
 from llm_eval.runner import run_eval, save_run
 
@@ -21,6 +22,11 @@ def main() -> None:
     )
     parser.add_argument("-c", "--concurrency", type=int, default=4)
     parser.add_argument(
+        "--judge", default=None,
+        help="Override the eval's judge provider for llm_judge graders "
+             "(e.g. ollama:llama3.2). Defaults to the eval's `judge:` field.",
+    )
+    parser.add_argument(
         "--results-dir", type=Path, default=Path("results"),
         help="Where to store the JSON snapshot of this run",
     )
@@ -29,7 +35,10 @@ def main() -> None:
     if not args.eval_file.exists():
         sys.exit(f"Eval file not found: {args.eval_file}")
 
-    run = asyncio.run(run_eval(args.eval_file, args.providers, args.concurrency))
+    judge_provider = create_provider(args.judge) if args.judge else None
+    run = asyncio.run(
+        run_eval(args.eval_file, args.providers, args.concurrency, judge_provider)
+    )
     print_report(run)
     out = save_run(run, args.results_dir)
     print(f"\nSnapshot: {out}")
