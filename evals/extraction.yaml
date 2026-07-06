@@ -2,11 +2,17 @@ name: extraction
 description: >
   Extract structured fields from free-text job ads into JSON.
   Ties into the JobScout use case: turning messy postings into clean records.
+
+  Note on design: an earlier version used a boolean `remote` field, but every
+  model classified "hybrid" as remote=true — a boolean can't represent hybrid.
+  The schema now uses a `work_mode` enum, which is both a fairer test and a more
+  realistic extraction target. This is a good example of an eval surfacing a
+  rubric bug, not just a model weakness.
 grader: json_fields
 system: >
   You extract structured data from job ads. Respond with ONLY a JSON object,
-  no prose, no markdown fences. Keys: title (string), seniority (one of:
-  junior, mid, senior), remote (boolean).
+  no prose, no markdown fences. Keys: seniority (one of: junior, mid, senior)
+  and work_mode (one of: remote, hybrid, onsite).
 
 cases:
   - id: senior-remote
@@ -14,9 +20,8 @@ cases:
       Ad: "We're hiring a Senior Backend Engineer (Python). Fully remote,
       work from anywhere in Europe."
     expected:
-      title: Senior Backend Engineer
       seniority: senior
-      remote: true
+      work_mode: remote
 
   - id: junior-onsite
     prompt: >
@@ -24,7 +29,7 @@ cases:
       Mon-Fri."
     expected:
       seniority: junior
-      remote: false
+      work_mode: onsite
 
   - id: mid-hybrid
     prompt: >
@@ -32,4 +37,4 @@ cases:
       office, 3 remote."
     expected:
       seniority: mid
-      remote: false
+      work_mode: hybrid
