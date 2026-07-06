@@ -1,0 +1,36 @@
+name: reasoning
+description: >
+  Classic reasoning / word problems that separate models by capability, not
+  just formatting. The model is told to end with a `FINAL: <answer>` line so a
+  regex grader can extract the answer regardless of how much it reasons first.
+
+  Grader note: patterns match the answer anywhere on the FINAL line, not
+  immediately after the colon — models often write "FINAL: You pay $30", and
+  anchoring tightly to the colon would fail a correct answer.
+grader: regex
+system: >
+  Solve the problem. You may reason step by step, but you MUST end your reply
+  with a line in exactly this form: FINAL: <answer>
+
+cases:
+  - id: percent-off
+    prompt: "A shirt costs $40. It is 25% off. How much do you pay?"
+    expected: 'FINAL:.*\b30\b'
+
+  - id: transitive-order
+    prompt: "Tom is older than Sara. Sara is older than Mike. Who is the youngest?"
+    expected: '(?i)FINAL:.*\bmike\b'
+
+  - id: widgets
+    prompt: >
+      If 3 machines make 3 widgets in 3 minutes, how many minutes do 100
+      machines need to make 100 widgets?
+    expected: 'FINAL:.*\b3\b'
+
+  - id: count-letters
+    prompt: "How many times does the letter r appear in the word strawberry?"
+    expected: 'FINAL:.*\b3\b'
+
+  - id: remainder
+    prompt: "What is the remainder when 100 is divided by 7?"
+    expected: 'FINAL:.*\b2\b'

@@ -1,0 +1,55 @@
+name: extraction_hard
+description: >
+  Harder version of the extraction eval: four categorical/boolean fields from
+  denser, messier ads. Uses only cleanly checkable field types (enums + a
+  boolean) so json_fields exact-matching stays fair — the difficulty is in the
+  reading comprehension, not in guessing an exact string.
+grader: json_fields
+system: >
+  You extract structured data from job ads. Respond with ONLY a JSON object,
+  no prose, no markdown fences. Keys and allowed values:
+    seniority: junior | mid | senior
+    work_mode: remote | hybrid | onsite
+    employment_type: full_time | part_time | contract | internship
+    has_salary: true if a specific salary or salary range is stated, else false
+
+cases:
+  - id: senior-contract-remote-salary
+    prompt: >
+      Ad: "Senior DevOps Engineer, 6-month contract, 100% remote. Rate:
+      €600/day. Kubernetes and Terraform required."
+    expected:
+      seniority: senior
+      work_mode: remote
+      employment_type: contract
+      has_salary: true
+
+  - id: intern-onsite-nosalary
+    prompt: >
+      Ad: "Summer Internship — Marketing. Our Novi Sad office, full days on
+      site. Great learning opportunity, mentorship provided."
+    expected:
+      seniority: junior
+      work_mode: onsite
+      employment_type: internship
+      has_salary: false
+
+  - id: mid-hybrid-parttime-salary
+    prompt: >
+      Ad: "Part-time (20h/week) mid-level UX Designer. Hybrid, 1 day/week in
+      office. Salary: $35,000-$45,000 pro-rata."
+    expected:
+      seniority: mid
+      work_mode: hybrid
+      employment_type: part_time
+      has_salary: true
+
+  - id: senior-fulltime-remote-nosalary
+    prompt: >
+      Ad: "We're growing! Lead Backend Engineer (permanent, full-time),
+      work from anywhere. Competitive compensation."
+    expected:
+      seniority: senior
+      work_mode: remote
+      employment_type: full_time
+      has_salary: false

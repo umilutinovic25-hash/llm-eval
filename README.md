@@ -103,6 +103,23 @@ Override the judge from the CLI (handy for judging offline with a local model):
 llm-eval evals/judge_demo.yaml -p ollama:llama3.2 --judge ollama:llama3.2
 ```
 
+## Included evals
+
+| File                    | Grader        | What it tests                                            |
+| ----------------------- | ------------- | ------------------------------------------------------- |
+| `smoke.yaml`            | exact_match   | Framework sanity check (offline, mock provider)         |
+| `classification.yaml`   | exact_match   | Sentiment labels — cheap smoke test for any provider    |
+| `extraction.yaml`       | json_fields   | Structured fields from job ads (JobScout use case)      |
+| `extraction_hard.yaml`  | json_fields   | 4 fields from denser ads — discriminates model quality  |
+| `reasoning.yaml`        | regex         | Word/logic problems that separate models by capability  |
+| `judge_demo.yaml`       | llm_judge     | Open-ended answers graded against a rubric              |
+
+A real 3-model local run (llama3.2, qwen2.5:3b, mistral) spreads them out:
+qwen leads on reasoning (4/5), llama on the hard extraction (3/4), and the
+weaker model both scores lowest and occasionally emits invalid JSON — which
+`json_fields` catches. The harder evals are meant to be failed; that's how they
+tell models apart.
+
 ## Cost tracking
 
 Cost is computed from each response's token usage against the published
