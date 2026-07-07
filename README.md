@@ -40,6 +40,16 @@ llm-eval evals/extraction.yaml \
 Providers are passed with `-p` (repeatable). Every run writes a JSON snapshot
 to `results/`. Exit code is non-zero if any case fails, so it works as a CI gate.
 
+### HTML report
+
+Aggregate snapshots into one self-contained, theme-aware HTML dashboard
+(pass-rate bars, latency, cost — no external assets, opens anywhere):
+
+```bash
+llm-eval-report                       # latest snapshot per eval in results/
+llm-eval-report results/*.json -o report.html
+```
+
 ### Providers
 
 | Spec                       | Backend            | Needs                    |

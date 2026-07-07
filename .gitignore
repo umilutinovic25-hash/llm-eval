@@ -3,4 +3,6 @@ __pycache__/
 *.egg-info/
 results/*.json
 !results/.gitkeep
+report.html
+*.report.html
 .DS_Store
